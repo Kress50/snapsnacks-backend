@@ -12,14 +12,44 @@ const graphql_1 = require("@nestjs/graphql");
 const apollo_1 = require("@nestjs/apollo");
 const path_1 = require("path");
 const restaurants_module_1 = require("./restaurants/restaurants.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const config_1 = require("@nestjs/config");
+const Joi = require("joi");
+const restaurant_entity_1 = require("./restaurants/entities/restaurant.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                envFilePath: process.env.NODE_ENV === 'dev'
+                    ? '.env.development.local'
+                    : '.env.test.local',
+                ignoreEnvFile: process.env.NODE_ENV === 'prod',
+                validationSchema: Joi.object({
+                    NODE_ENV: Joi.string().valid('dev', 'prod', 'test').required(),
+                    DB_HOST: Joi.string().required(),
+                    DB_PORT: Joi.string().required(),
+                    DB_USERNAME: Joi.string().required(),
+                    DB_PASSWORD: Joi.string().required(),
+                    DB_NAME: Joi.string().required(),
+                }),
+            }),
             graphql_1.GraphQLModule.forRoot({
                 driver: apollo_1.ApolloDriver,
                 autoSchemaFile: (0, path_1.join)(process.cwd(), 'src/schema.gql'),
+            }),
+            typeorm_1.TypeOrmModule.forRoot({
+                type: 'postgres',
+                host: process.env.DB_HOST,
+                port: +process.env.DB_POST,
+                username: process.env.DB_USERNAME,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB_NAME,
+                entities: [restaurant_entity_1.Restaurant],
+                synchronize: process.env.NODE_ENV !== 'prod',
+                logging: true,
             }),
             restaurants_module_1.RestaurantsModule,
         ],
