@@ -11,9 +11,9 @@ type Restaurant {
 }
 
 type Query {
-  restaurants(veganOnly: Boolean!): [Restaurant!]!
+  restaurants: [Restaurant!]!
 }
 
 type Mutation {
-  createRestaurant(name: String!, isVegan: Boolean!, address: String!, categoryName: String!): Boolean!
+  createRestaurant(name: String!, isVegan: Boolean!, address: String!, ownersName: String!, categoryName: String!): Boolean!
 }
