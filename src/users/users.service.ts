@@ -4,12 +4,14 @@ import { Repository } from 'typeorm';
 import { CreateAccountInput } from './dtos/create-account.dto';
 import { LoginAccountInput } from './dtos/login-account.dto';
 import { User } from './entities/user.entity';
+import { JwtService } from 'src/jwt/jwt.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly users: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async createAccount({
@@ -51,7 +53,7 @@ export class UsersService {
       }
       return {
         ok: true,
-        token: 'test1111',
+        token: this.jwtService.sign({ id: user.id }),
       };
     } catch (e) {
       return { ok: false, error: "Couldn't login account" };
