@@ -59,4 +59,8 @@ export class UsersService {
       return { ok: false, error: "Couldn't login account" };
     }
   }
+
+  async findById(id: number): Promise<User> {
+    return this.users.findOneBy({ id });
+  }
 }
