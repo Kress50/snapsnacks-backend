@@ -17,6 +17,7 @@ import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { AuthModule } from './auth/auth.module';
 import { Verification } from './users/entities/verification.entity';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -35,6 +36,9 @@ import { Verification } from './users/entities/verification.entity';
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
         PRIVATE_KEY: Joi.string().required(),
+        MAIL_API: Joi.string().required(),
+        MAIL_DOMAIN: Joi.string().required(),
+        MAIL_FROM: Joi.string().required(),
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -59,6 +63,11 @@ import { Verification } from './users/entities/verification.entity';
       privateKey: process.env.PRIVATE_KEY,
     }),
     AuthModule,
+    MailModule.forRoot({
+      apiKey: process.env.MAIL_API,
+      domain: process.env.MAIL_DOMAIN,
+      fromEmail: process.env.MAIL_FROM,
+    }),
   ],
 })
 export class AppModule implements NestModule {
