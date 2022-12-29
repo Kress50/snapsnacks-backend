@@ -22,6 +22,7 @@ export class UsersResolver {
     return true;
   }
 
+  //see currently logged in user based on jwt
   @Query(() => User)
   @UseGuards(AuthGuard)
   me(@AuthUser() authUser: User) {
