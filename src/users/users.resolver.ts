@@ -6,10 +6,12 @@ import {
   CreateAccountInput,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
+import { EditAccountOutput, EditAccoutInput } from './dtos/edit-profile.dto';
 import {
   LoginAccountInput,
   LoginAccountOutput,
 } from './dtos/login-account.dto';
+import { UserAccountInput, UserAccountOutput } from './dtos/user-profile.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -17,16 +19,34 @@ import { UsersService } from './users.service';
 export class UsersResolver {
   constructor(private readonly userService: UsersService) {}
 
-  @Query(() => Boolean)
-  test() {
-    return true;
-  }
-
   //see currently logged in user based on jwt
-  @Query(() => User)
   @UseGuards(AuthGuard)
+  @Query(() => User)
   me(@AuthUser() authUser: User) {
     return authUser;
+  }
+
+  //check user based on id
+  @UseGuards(AuthGuard)
+  @Query(() => UserAccountOutput)
+  async user(
+    @Args() userAccountInput: UserAccountInput,
+  ): Promise<UserAccountOutput> {
+    try {
+      const user = await this.userService.findById(userAccountInput.userId);
+      if (!user) {
+        throw Error();
+      }
+      return {
+        ok: Boolean(user),
+        user,
+      };
+    } catch (e) {
+      return {
+        error: 'User not found',
+        ok: false,
+      };
+    }
   }
 
   @Mutation(() => CreateAccountOutput)
@@ -59,6 +79,25 @@ export class UsersResolver {
   ): Promise<LoginAccountOutput> {
     try {
       return await this.userService.loginAccount(loginAccountInput);
+    } catch (e) {
+      return {
+        ok: false,
+        error: e,
+      };
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(() => EditAccountOutput)
+  async editProfile(
+    @AuthUser() authUser: User,
+    @Args('input') editAccoutInput: EditAccoutInput,
+  ): Promise<EditAccountOutput> {
+    try {
+      await this.userService.editProfile(authUser.id, editAccoutInput);
+      return {
+        ok: true,
+      };
     } catch (e) {
       return {
         ok: false,

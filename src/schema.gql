@@ -3,6 +3,9 @@
 # ------------------------------------------------------
 
 type User {
+  id: Float!
+  createdAt: Float!
+  updatedAt: Float!
   email: String!
   password: String!
   role: UserRole!
@@ -19,20 +22,32 @@ type CreateAccountOutput {
   ok: Boolean!
 }
 
+type EditAccountOutput {
+  error: String
+  ok: Boolean!
+}
+
 type LoginAccountOutput {
   error: String
   ok: Boolean!
   token: String
 }
 
+type UserAccountOutput {
+  error: String
+  ok: Boolean!
+  user: User
+}
+
 type Query {
-  test: Boolean!
   me: User!
+  user(userId: Float!): UserAccountOutput!
 }
 
 type Mutation {
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   loginAccount(input: LoginAccountInput!): LoginAccountOutput!
+  editProfile(input: EditAccoutInput!): EditAccountOutput!
 }
 
 input CreateAccountInput {
@@ -44,4 +59,9 @@ input CreateAccountInput {
 input LoginAccountInput {
   email: String!
   password: String!
+}
+
+input EditAccoutInput {
+  email: String
+  password: String
 }
