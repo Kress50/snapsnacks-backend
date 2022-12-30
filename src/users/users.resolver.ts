@@ -6,7 +6,7 @@ import {
   CreateAccountInput,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
-import { EditAccountOutput, EditAccoutInput } from './dtos/edit-profile.dto';
+import { EditAccountInput, EditAccountOutput } from './dtos/edit-profile.dto';
 import {
   LoginAccountInput,
   LoginAccountOutput,
@@ -33,94 +33,36 @@ export class UsersResolver {
   async user(
     @Args() userAccountInput: UserAccountInput,
   ): Promise<UserAccountOutput> {
-    try {
-      const user = await this.userService.findById(userAccountInput.userId);
-      if (!user) {
-        throw Error();
-      }
-      return {
-        ok: Boolean(user),
-        user,
-      };
-    } catch (e) {
-      return {
-        error: 'User not found',
-        ok: false,
-      };
-    }
+    return this.userService.findById(userAccountInput.userId);
   }
 
   @Mutation(() => CreateAccountOutput)
   async createAccount(
     @Args('input') createAccountInput: CreateAccountInput,
   ): Promise<CreateAccountOutput> {
-    try {
-      const error = await this.userService.createAccount(createAccountInput);
-      //pulling handled error from service if it exists => errors
-      if (error) {
-        return {
-          ok: false,
-          error,
-        };
-      }
-      return {
-        ok: true,
-      };
-    } catch (e) {
-      return {
-        ok: false,
-        error: e,
-      };
-    }
+    return this.userService.createAccount(createAccountInput);
   }
 
   @Mutation(() => LoginAccountOutput)
   async loginAccount(
     @Args('input') loginAccountInput: LoginAccountInput,
   ): Promise<LoginAccountOutput> {
-    try {
-      return await this.userService.loginAccount(loginAccountInput);
-    } catch (e) {
-      return {
-        ok: false,
-        error: e,
-      };
-    }
+    return await this.userService.loginAccount(loginAccountInput);
   }
 
   @UseGuards(AuthGuard)
   @Mutation(() => EditAccountOutput)
   async editProfile(
     @AuthUser() authUser: User,
-    @Args('input') editAccoutInput: EditAccoutInput,
+    @Args('input') editAccountInput: EditAccountInput,
   ): Promise<EditAccountOutput> {
-    try {
-      await this.userService.editProfile(authUser.id, editAccoutInput);
-      return {
-        ok: true,
-      };
-    } catch (e) {
-      return {
-        ok: false,
-        error: e,
-      };
-    }
+    return this.userService.editProfile(authUser.id, editAccountInput);
   }
 
   @Mutation(() => VerifyEmailOutput)
   async verifyEmail(
     @Args('input') verifyEmailInput: VerifyEmailInput,
   ): Promise<VerifyEmailOutput> {
-    try {
-      await this.userService.verifyEmail(verifyEmailInput.code);
-      return {
-        ok: true,
-      };
-    } catch (e) {
-      return {
-        ok: false,
-        error: e,
-      };
-    }
+    return this.userService.verifyEmail(verifyEmailInput.code);
   }
 }

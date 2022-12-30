@@ -53,7 +53,7 @@ type Query {
 type Mutation {
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   loginAccount(input: LoginAccountInput!): LoginAccountOutput!
-  editProfile(input: EditAccoutInput!): EditAccountOutput!
+  editProfile(input: EditAccountInput!): EditAccountOutput!
   verifyEmail(input: VerifyEmailInput!): VerifyEmailOutput!
 }
 
@@ -68,7 +68,7 @@ input LoginAccountInput {
   password: String!
 }
 
-input EditAccoutInput {
+input EditAccountInput {
   email: String
   password: String
 }

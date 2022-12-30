@@ -3,7 +3,7 @@ import { CoreOutput } from 'src/common/dtos/output.dto';
 import { User } from '../entities/user.entity';
 
 @InputType()
-export class EditAccoutInput extends PartialType(
+export class EditAccountInput extends PartialType(
   PickType(User, ['email', 'password']),
 ) {}
 
