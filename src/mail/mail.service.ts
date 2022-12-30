@@ -13,11 +13,11 @@ export class MailService {
   //Sends an email through Mailgun API using cURL
   //!Needs: API KEY, DOMAIN, FROM DOMAIN EMAIL, TEMPLATE (ON MAILGUN)
   //!Currently only sending to a single email due to how Mailgun free tier works
-  private async sendEmail(
+  async sendEmail(
     subject: string,
     template: string,
     emailVars: EmailVar[],
-  ) {
+  ): Promise<boolean> {
     const form = new FormData();
     form.append(
       'from',
@@ -30,10 +30,9 @@ export class MailService {
       form.append(`v:${element.key}`, element.value),
     );
     try {
-      const response = await got(
+      await got.post(
         `https://api.mailgun.net/v3/${this.options.domain}/messages`,
         {
-          method: 'POST',
           headers: {
             Authorization: `Basic ${Buffer.from(
               `api:${this.options.apiKey}`,
@@ -42,9 +41,9 @@ export class MailService {
           body: form,
         },
       );
-      console.log(response.body);
+      return true;
     } catch (e) {
-      console.log(e);
+      return false;
     }
   }
 
