@@ -2,6 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Category {
+  id: Float!
+  createdAt: Float!
+  updatedAt: Float!
+  name: String!
+  coverImage: String!
+  restaurants: [Restaurant!]!
+}
+
+type Restaurant {
+  id: Float!
+  createdAt: Float!
+  updatedAt: Float!
+  name: String!
+  coverImage: String!
+  address: String!
+  category: Category
+  owner: User!
+}
+
 type User {
   id: Float!
   createdAt: Float!
@@ -10,6 +30,7 @@ type User {
   password: String!
   role: UserRole!
   verified: Boolean!
+  restaurants: [Restaurant!]!
 }
 
 enum UserRole {
@@ -48,6 +69,7 @@ type VerifyEmailOutput {
 type Query {
   me: User!
   user(userId: Float!): UserAccountOutput!
+  restaurants: [Restaurant!]!
 }
 
 type Mutation {
@@ -55,6 +77,8 @@ type Mutation {
   loginAccount(input: LoginAccountInput!): LoginAccountOutput!
   editProfile(input: EditAccountInput!): EditAccountOutput!
   verifyEmail(input: VerifyEmailInput!): VerifyEmailOutput!
+  createRestaurant(input: CreateRestaurantDto!): Boolean!
+  updateRestaurant(id: Float!, data: UpdateRestaurantInputType!): Boolean!
 }
 
 input CreateAccountInput {
@@ -75,4 +99,46 @@ input EditAccountInput {
 
 input VerifyEmailInput {
   code: String!
+}
+
+input CreateRestaurantDto {
+  createdAt: Float!
+  updatedAt: Float!
+  name: String!
+  coverImage: String!
+  address: String!
+  category: CategoryInputType
+  owner: UserInputType!
+}
+
+input CategoryInputType {
+  name: String!
+  coverImage: String!
+  restaurants: [RestaurantInputType!]!
+}
+
+input RestaurantInputType {
+  name: String!
+  coverImage: String!
+  address: String!
+  category: CategoryInputType
+  owner: UserInputType!
+}
+
+input UserInputType {
+  email: String!
+  password: String!
+  role: UserRole!
+  verified: Boolean!
+  restaurants: [RestaurantInputType!]!
+}
+
+input UpdateRestaurantInputType {
+  createdAt: Float
+  updatedAt: Float
+  name: String
+  coverImage: String
+  address: String
+  category: CategoryInputType
+  owner: UserInputType
 }
