@@ -65,7 +65,7 @@ AppModule = __decorate([
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
                 synchronize: process.env.NODE_ENV !== 'prod',
-                logging: true,
+                logging: process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
                 entities: [user_entity_1.User, verification_entity_1.Verification],
             }),
             users_module_1.UsersModule,

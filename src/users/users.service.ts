@@ -110,8 +110,16 @@ export class UsersService {
     try {
       const user = await this.users.findOne({ where: { id } });
       if (email) {
+        const response = await this.users.findOne({ where: { email } });
+        if (response) {
+          return {
+            ok: false,
+            error: 'This email is already taken',
+          };
+        }
         user.email = email;
         user.verified = false;
+        await this.verifications.delete({ user: { id } });
         const verification = await this.verifications.save(
           this.verifications.create({ user }),
         );
