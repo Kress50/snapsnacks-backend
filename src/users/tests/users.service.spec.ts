@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { JwtService } from 'src/jwt/jwt.service';
 import { MailService } from 'src/mail/mail.service';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { User, UserRole } from '../entities/user.entity';
 import { Verification } from '../entities/verification.entity';
 import { UsersService } from '../users.service';
 
@@ -73,7 +73,7 @@ describe('UserService', () => {
     const createAccountArgs = {
       email: '',
       password: '',
-      role: 0,
+      role: UserRole.Owner,
     };
 
     //?User exists
@@ -139,7 +139,7 @@ describe('UserService', () => {
       const result = await service.createAccount(createAccountArgs);
       expect(result).toEqual({
         ok: false,
-        error: "Couldn't create an account",
+        error: 'Could not create an account',
       });
     });
   });
@@ -195,7 +195,7 @@ describe('UserService', () => {
         new Error('MOCKED ERROR IGNORE'),
       );
       const result = await service.loginAccount(loginArgs);
-      expect(result).toEqual({ ok: false, error: "Couldn't login account" });
+      expect(result).toEqual({ ok: false, error: 'Could not login account' });
     });
   });
 
@@ -292,7 +292,7 @@ describe('UserService', () => {
       const result = await service.editProfile(1, { email: '12' });
       expect(result).toEqual({
         ok: false,
-        error: "Couldn't change user's account",
+        error: "Could not change user's account",
       });
     });
   });
@@ -336,7 +336,7 @@ describe('UserService', () => {
       const result = await service.verifyEmail('code');
       expect(result).toEqual({
         ok: false,
-        error: "Couldn't verify an account",
+        error: 'Could not verify an account',
       });
     });
   });

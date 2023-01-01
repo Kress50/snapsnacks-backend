@@ -72,6 +72,11 @@ type CreateRestaurantOutput {
   ok: Boolean!
 }
 
+type EditRestaurantOutput {
+  error: String
+  ok: Boolean!
+}
+
 type Query {
   me: User!
   user(userId: Float!): UserAccountOutput!
@@ -79,6 +84,8 @@ type Query {
 
 type Mutation {
   createRestaurant(input: CreateRestaurantInput!): CreateRestaurantOutput!
+  editRestaurant(input: EditRestaurantInput!): EditRestaurantOutput!
+  deleteRestaurant(input: DeleteRestaurantInput!): EditRestaurantOutput!
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   loginAccount(input: LoginAccountInput!): LoginAccountOutput!
   editProfile(input: EditAccountInput!): EditAccountOutput!
@@ -90,6 +97,18 @@ input CreateRestaurantInput {
   coverImage: String!
   address: String!
   categoryName: String!
+}
+
+input EditRestaurantInput {
+  name: String
+  coverImage: String
+  address: String
+  categoryName: String
+  restaurantId: Float!
+}
+
+input DeleteRestaurantInput {
+  restaurantId: Float!
 }
 
 input CreateAccountInput {

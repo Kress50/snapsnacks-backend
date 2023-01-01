@@ -51,7 +51,7 @@ export class UsersService {
       return { ok: true, error: null };
     } catch (e) {
       // console.log(e);
-      return { ok: false, error: "Couldn't create an account" };
+      return { ok: false, error: 'Could not create an account' };
     }
   }
 
@@ -83,7 +83,7 @@ export class UsersService {
       };
     } catch (e) {
       // console.log(e);
-      return { ok: false, error: "Couldn't login account" };
+      return { ok: false, error: 'Could not login account' };
     }
   }
 
@@ -137,7 +137,7 @@ export class UsersService {
       // console.log(e);
       return {
         ok: false,
-        error: "Couldn't change user's account",
+        error: "Could not change user's account",
       };
     }
   }
@@ -162,7 +162,7 @@ export class UsersService {
       // console.log(e);
       return {
         ok: false,
-        error: "Couldn't verify an account",
+        error: 'Could not verify an account',
       };
     }
   }
