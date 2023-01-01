@@ -4,6 +4,7 @@ import { CreateAccountOutput } from 'src/users/dtos/create-account.dto';
 import { User } from 'src/users/entities/user.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
+import { CategoryInput, CategoryOutput } from './dtos/category.dto';
 import { CreateRestaurantInput } from './dtos/create-restaurant.dto';
 import {
   DeleteRestaurantInput,
@@ -148,5 +149,25 @@ export class RestaurantService {
         },
       },
     });
+  }
+
+  async findCategoryBySlug({ slug }: CategoryInput) {
+    try {
+      const category = await this.category.findOneBy({ slug });
+      if (!category)
+        return {
+          ok: false,
+          error: 'No category found',
+        };
+      return {
+        ok: true,
+        category,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not find a category',
+      };
+    }
   }
 }

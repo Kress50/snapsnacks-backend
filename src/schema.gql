@@ -74,6 +74,12 @@ type AllCategoriesOutput {
   categories: [Category!]
 }
 
+type CategoryOutput {
+  error: String
+  ok: Boolean!
+  category: Category
+}
+
 type CreateRestaurantOutput {
   error: String
   ok: Boolean!
@@ -86,6 +92,7 @@ type EditRestaurantOutput {
 
 type Query {
   allCategories: AllCategoriesOutput!
+  category(slug: String!): CategoryOutput!
   me: User!
   user(userId: Float!): UserAccountOutput!
 }
