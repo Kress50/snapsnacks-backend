@@ -78,11 +78,18 @@ type Query {
 }
 
 type Mutation {
+  createRestaurant(input: CreateRestaurantInput!): CreateRestaurantOutput!
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   loginAccount(input: LoginAccountInput!): LoginAccountOutput!
   editProfile(input: EditAccountInput!): EditAccountOutput!
   verifyEmail(input: VerifyEmailInput!): VerifyEmailOutput!
-  createRestaurant(input: CreateRestaurantInput!): CreateRestaurantOutput!
+}
+
+input CreateRestaurantInput {
+  name: String!
+  coverImage: String!
+  address: String!
+  categoryName: String!
 }
 
 input CreateAccountInput {
@@ -103,11 +110,4 @@ input EditAccountInput {
 
 input VerifyEmailInput {
   code: String!
-}
-
-input CreateRestaurantInput {
-  name: String!
-  coverImage: String!
-  address: String!
-  categoryName: String!
 }

@@ -71,18 +71,18 @@ AppModule = __decorate([
                 logging: process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
                 entities: [user_entity_1.User, verification_entity_1.Verification, restaurant_entity_1.Restaurant, category_entity_1.Category],
             }),
-            users_module_1.UsersModule,
-            restaurants_module_1.RestaurantsModule,
-            common_module_1.CommonModule,
             jwt_module_1.JwtModule.forRoot({
                 privateKey: process.env.PRIVATE_KEY,
             }),
-            auth_module_1.AuthModule,
             mail_module_1.MailModule.forRoot({
                 apiKey: process.env.MAIL_API,
                 domain: process.env.MAIL_DOMAIN,
                 fromEmail: process.env.MAIL_FROM,
             }),
+            auth_module_1.AuthModule,
+            common_module_1.CommonModule,
+            restaurants_module_1.RestaurantsModule,
+            users_module_1.UsersModule,
         ],
     })
 ], AppModule);

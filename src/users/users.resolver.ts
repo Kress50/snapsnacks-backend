@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
 import { AuthUser } from 'src/auth/auth-user.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Role } from 'src/auth/role.decorator';
 import {
   CreateAccountInput,
   CreateAccountOutput,
@@ -21,15 +22,15 @@ export class UsersResolver {
   constructor(private readonly userService: UsersService) {}
 
   //see currently logged in user based on jwt
-  @UseGuards(AuthGuard)
   @Query(() => User)
+  @Role(['Any'])
   me(@AuthUser() authUser: User) {
     return authUser;
   }
 
   //check user based on id
-  @UseGuards(AuthGuard)
   @Query(() => UserAccountOutput)
+  @Role(['Any'])
   async user(
     @Args() userAccountInput: UserAccountInput,
   ): Promise<UserAccountOutput> {
@@ -50,8 +51,8 @@ export class UsersResolver {
     return await this.userService.loginAccount(loginAccountInput);
   }
 
-  @UseGuards(AuthGuard)
   @Mutation(() => EditAccountOutput)
+  @Role(['Any'])
   async editProfile(
     @AuthUser() authUser: User,
     @Args('input') editAccountInput: EditAccountInput,

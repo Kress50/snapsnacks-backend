@@ -11,10 +11,10 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { IsBoolean, IsEmail, IsEnum, IsString } from 'class-validator';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 
-enum UserRole {
-  Client,
-  Owner,
-  Delivery,
+export enum UserRole {
+  Client = 'Client',
+  Owner = 'Owner',
+  Delivery = 'Delivery',
 }
 
 registerEnumType(UserRole, { name: 'UserRole' });
@@ -40,9 +40,7 @@ export class User extends CoreEntity {
   @IsBoolean()
   verified: boolean;
   @Field(() => [Restaurant])
-  @OneToMany(() => Restaurant, (restaurant) => restaurant.owner, {
-    onDelete: 'CASCADE',
-  })
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
   restaurants: Restaurant[];
 
   //hashing password

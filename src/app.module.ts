@@ -61,18 +61,18 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
         process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
       entities: [User, Verification, Restaurant, Category],
     }),
-    UsersModule,
-    RestaurantsModule,
-    CommonModule,
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
     }),
-    AuthModule,
     MailModule.forRoot({
       apiKey: process.env.MAIL_API,
       domain: process.env.MAIL_DOMAIN,
       fromEmail: process.env.MAIL_FROM,
     }),
+    AuthModule,
+    CommonModule,
+    RestaurantsModule,
+    UsersModule,
   ],
 })
 export class AppModule implements NestModule {
