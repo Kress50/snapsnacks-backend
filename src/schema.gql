@@ -77,6 +77,7 @@ type AllCategoriesOutput {
 type CategoryOutput {
   error: String
   ok: Boolean!
+  totalPages: Int
   category: Category
 }
 
@@ -92,9 +93,14 @@ type EditRestaurantOutput {
 
 type Query {
   allCategories: AllCategoriesOutput!
-  category(slug: String!): CategoryOutput!
+  category(input: CategoryInput!): CategoryOutput!
   me: User!
   user(userId: Float!): UserAccountOutput!
+}
+
+input CategoryInput {
+  page: Int! = 1
+  slug: String!
 }
 
 type Mutation {

@@ -151,17 +151,32 @@ export class RestaurantService {
     });
   }
 
-  async findCategoryBySlug({ slug }: CategoryInput) {
+  async findCategoryBySlug({ slug, page }: CategoryInput) {
     try {
-      const category = await this.category.findOneBy({ slug });
+      const category = await this.category.findOne({
+        where: { slug },
+        relations: ['restaurants'],
+      });
       if (!category)
         return {
           ok: false,
           error: 'No category found',
         };
+      const restaurants = await this.restaurants.find({
+        where: {
+          category: {
+            id: category.id,
+          },
+        },
+        take: 25,
+        skip: (page - 1) * 25,
+      });
+      category.restaurants = restaurants;
+      const totalResults = await this.countRestaurants(category);
       return {
         ok: true,
         category,
+        totalPages: Math.ceil(totalResults / 25),
       };
     } catch {
       return {
