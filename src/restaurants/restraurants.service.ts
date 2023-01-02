@@ -14,6 +14,8 @@ import {
   EditRestaurantInput,
   EditRestaurantOutput,
 } from './dtos/edit-restaurant.dto';
+import { RestaurantInput, RestaurantOutput } from './dtos/restaurant.dto';
+import { RestaurantsInput, RestaurantsOutput } from './dtos/restaurants.dto';
 import { Category } from './entities/category.entity';
 import { Restaurant } from './entities/restaurant.entity';
 import { CategoryRepository } from './repositories/category.repository';
@@ -182,6 +184,50 @@ export class RestaurantService {
       return {
         ok: false,
         error: 'Could not find a category',
+      };
+    }
+  }
+
+  async allRestaurants({ page }: RestaurantsInput): Promise<RestaurantsOutput> {
+    try {
+      const [restaurants, totalResults] = await this.restaurants.findAndCount({
+        skip: (page - 1) * 25,
+        take: 25,
+      });
+      return {
+        ok: true,
+        restaurants,
+        totalItems: totalResults,
+        totalPages: Math.ceil(totalResults / 25),
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not find any restaurants',
+      };
+    }
+  }
+
+  async findRestaurantById({
+    restaurantId,
+  }: RestaurantInput): Promise<RestaurantOutput> {
+    try {
+      const restaurant = await this.restaurants.findOne({
+        where: {
+          id: restaurantId,
+        },
+      });
+      if (!restaurant) {
+        return {
+          ok: false,
+          error: 'This restaurant does not exist',
+        };
+      }
+      return { ok: true, restaurant };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not find restaurant',
       };
     }
   }
