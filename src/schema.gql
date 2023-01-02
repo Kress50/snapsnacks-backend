@@ -13,6 +13,17 @@ type Category {
   restaurantCount: Int!
 }
 
+type DishChoice {
+  name: String!
+  extra: Float
+}
+
+type DishOptions {
+  name: String!
+  choices: [DishChoice!]
+  extra: Float
+}
+
 type Dish {
   id: Float!
   createdAt: Float!
@@ -22,6 +33,7 @@ type Dish {
   price: Float!
   description: String!
   restaurant: Restaurant!
+  options: [DishOptions!]
 }
 
 type Restaurant {
@@ -94,7 +106,22 @@ type CategoryOutput {
   category: Category
 }
 
+type CreateDishOutput {
+  error: String
+  ok: Boolean!
+}
+
 type CreateRestaurantOutput {
+  error: String
+  ok: Boolean!
+}
+
+type DeleteRestaurantOutput {
+  error: String
+  ok: Boolean!
+}
+
+type EditDishOutput {
   error: String
   ok: Boolean!
 }
@@ -127,13 +154,18 @@ type SearchRestaurantOutput {
 }
 
 type Query {
+  allCategories: AllCategoriesOutput!
+  category(input: CategoryInput!): CategoryOutput!
   Restaurants(input: RestaurantsInput!): RestaurantsOutput!
   Restaurant(input: RestaurantInput!): RestaurantOutput!
   searchRestaurant(input: SearchRestaurantInput!): SearchRestaurantOutput!
-  allCategories: AllCategoriesOutput!
-  category(input: CategoryInput!): CategoryOutput!
   me: User!
   user(userId: Float!): UserAccountOutput!
+}
+
+input CategoryInput {
+  page: Int! = 1
+  slug: String!
 }
 
 input RestaurantsInput {
@@ -149,12 +181,10 @@ input SearchRestaurantInput {
   query: String!
 }
 
-input CategoryInput {
-  page: Int! = 1
-  slug: String!
-}
-
 type Mutation {
+  createDish(input: CreateDishInput!): CreateDishOutput!
+  deleteDish(input: DeleteDishInput!): DeleteRestaurantOutput!
+  editDish(input: EditDishInput!): EditDishOutput!
   createRestaurant(input: CreateRestaurantInput!): CreateRestaurantOutput!
   editRestaurant(input: EditRestaurantInput!): EditRestaurantOutput!
   deleteRestaurant(input: DeleteRestaurantInput!): EditRestaurantOutput!
@@ -162,6 +192,37 @@ type Mutation {
   loginAccount(input: LoginAccountInput!): LoginAccountOutput!
   editProfile(input: EditAccountInput!): EditAccountOutput!
   verifyEmail(input: VerifyEmailInput!): VerifyEmailOutput!
+}
+
+input CreateDishInput {
+  name: String!
+  price: Float!
+  description: String!
+  options: [DishOptionsInputType!]
+  restaurantId: Float!
+}
+
+input DishOptionsInputType {
+  name: String!
+  choices: [DishChoiceInputType!]
+  extra: Float
+}
+
+input DishChoiceInputType {
+  name: String!
+  extra: Float
+}
+
+input DeleteDishInput {
+  dishId: Float!
+}
+
+input EditDishInput {
+  name: String
+  price: Float
+  description: String
+  options: [DishOptionsInputType!]
+  dishId: Float!
 }
 
 input CreateRestaurantInput {

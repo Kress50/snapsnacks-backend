@@ -5,11 +5,14 @@ import { User } from 'src/users/entities/user.entity';
 import { ILike, Repository } from 'typeorm';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
 import { CategoryInput } from './dtos/category.dto';
+import { CreateDishInput } from './dtos/create-dish.dto';
 import { CreateRestaurantInput } from './dtos/create-restaurant.dto';
+import { DeleteDishInput, DeleteDishOutput } from './dtos/delete-dish.dto';
 import {
   DeleteRestaurantInput,
   DeleteRestaurantOutput,
 } from './dtos/delete-restaurant.dto';
+import { EditDishInput, EditDishOutput } from './dtos/edit-dish.dto';
 import {
   EditRestaurantInput,
   EditRestaurantOutput,
@@ -21,6 +24,7 @@ import {
   SearchRestaurantOutput,
 } from './dtos/search-restaurant.dto';
 import { Category } from './entities/category.entity';
+import { Dish } from './entities/dish.entity';
 import { Restaurant } from './entities/restaurant.entity';
 import { CategoryRepository } from './repositories/category.repository';
 @Injectable()
@@ -30,6 +34,8 @@ export class RestaurantService {
     private readonly restaurants: Repository<Restaurant>,
     @InjectRepository(Category)
     private readonly category: Repository<Category>,
+    @InjectRepository(Dish)
+    private readonly dishes: Repository<Dish>,
     private readonly categories: CategoryRepository,
   ) {}
 
@@ -220,6 +226,7 @@ export class RestaurantService {
         where: {
           id: restaurantId,
         },
+        relations: ['menu'],
       });
       if (!restaurant) {
         return {
@@ -256,6 +263,107 @@ export class RestaurantService {
       return {
         ok: false,
         error: 'Could not find restaurant with this query',
+      };
+    }
+  }
+
+  async createDish(
+    owner: User,
+    createDishInput: CreateDishInput,
+  ): Promise<CreateAccountOutput> {
+    try {
+      const restaurant = await this.restaurants.findOne({
+        where: {
+          id: createDishInput.restaurantId,
+        },
+      });
+      if (!restaurant)
+        return {
+          ok: false,
+          error: 'Could not find the restaurant that you own',
+        };
+      if (owner.id !== restaurant.ownerId)
+        return {
+          ok: false,
+          error: 'Could not verify your identity',
+        };
+      await this.dishes.save(
+        this.dishes.create({ ...createDishInput, restaurant }),
+      );
+      return {
+        ok: true,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not create a dish',
+      };
+    }
+  }
+
+  async deleteDish(
+    owner: User,
+    { dishId }: DeleteDishInput,
+  ): Promise<DeleteDishOutput> {
+    try {
+      const dish = await this.dishes.findOne({
+        where: { id: dishId },
+        relations: ['restaurant'],
+      });
+      if (!dish) {
+        return {
+          ok: false,
+          error: 'Dish not found',
+        };
+      }
+      if (owner.id !== dish.restaurant.ownerId) {
+        return {
+          ok: false,
+          error: 'You cannot delete this dish',
+        };
+      }
+      await this.dishes.delete(dishId);
+      return { ok: true };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not delete the dish',
+      };
+    }
+  }
+
+  async editDish(
+    owner: User,
+    editDish: EditDishInput,
+  ): Promise<EditDishOutput> {
+    try {
+      const dish = await this.dishes.findOne({
+        where: { id: editDish.dishId },
+        relations: ['restaurant'],
+      });
+      if (!dish) {
+        return {
+          ok: false,
+          error: 'Dish not found',
+        };
+      }
+      if (owner.id !== dish.restaurant.ownerId) {
+        return {
+          ok: false,
+          error: 'You cannot edit this dish',
+        };
+      }
+      await this.dishes.save([
+        {
+          id: editDish.dishId,
+          ...editDish,
+        },
+      ]);
+      return { ok: true };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not edit  the dish',
       };
     }
   }
