@@ -9,8 +9,19 @@ type Category {
   name: String!
   coverImage: String
   slug: String!
-  restaurants: [Restaurant!]!
+  restaurants: [Restaurant!]
   restaurantCount: Int!
+}
+
+type Dish {
+  id: Float!
+  createdAt: Float!
+  updatedAt: Float!
+  name: String!
+  coverImage: String
+  price: Float!
+  description: String!
+  restaurant: Restaurant!
 }
 
 type Restaurant {
@@ -22,6 +33,7 @@ type Restaurant {
   address: String!
   category: Category
   owner: User!
+  menu: [Dish!]!
 }
 
 type User {
