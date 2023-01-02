@@ -106,9 +106,18 @@ type RestaurantsOutput {
   restaurants: [Restaurant!]
 }
 
+type SearchRestaurantOutput {
+  error: String
+  ok: Boolean!
+  totalPages: Int
+  totalItems: Int
+  restaurants: [Restaurant!]
+}
+
 type Query {
   Restaurants(input: RestaurantsInput!): RestaurantsOutput!
   Restaurant(input: RestaurantInput!): RestaurantOutput!
+  searchRestaurant(input: SearchRestaurantInput!): SearchRestaurantOutput!
   allCategories: AllCategoriesOutput!
   category(input: CategoryInput!): CategoryOutput!
   me: User!
@@ -121,6 +130,11 @@ input RestaurantsInput {
 
 input RestaurantInput {
   restaurantId: Float!
+}
+
+input SearchRestaurantInput {
+  page: Int! = 1
+  query: String!
 }
 
 input CategoryInput {
