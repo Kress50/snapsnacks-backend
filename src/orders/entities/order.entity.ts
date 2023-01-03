@@ -22,6 +22,7 @@ import { OrderItem } from './order-item.dto';
 export enum OrderStatus {
   Pending = 'Pending',
   Cooking = 'Cooking',
+  Waiting = 'Waiting For Pickup',
   PickedUp = 'PickedUp',
   Delivered = 'Delivered',
 }
