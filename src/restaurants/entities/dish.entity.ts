@@ -6,7 +6,7 @@ import { Restaurant } from './restaurant.entity';
 
 @InputType('DishChoiceInputType', { isAbstract: true })
 @ObjectType()
-class DishChoice {
+export class DishChoice {
   @Field(() => String)
   name: string;
   @Field(() => Number, { nullable: true })
@@ -15,7 +15,7 @@ class DishChoice {
 
 @InputType('DishOptionsInputType', { isAbstract: true })
 @ObjectType()
-class DishOptions {
+export class DishOptions {
   @Field(() => String)
   @IsString()
   name: string;
@@ -43,7 +43,7 @@ export class Dish extends CoreEntity {
   @Field(() => Number)
   @Column()
   @IsNumber()
-  price: string;
+  price: number;
   @Field(() => String)
   @Column()
   @IsString()
