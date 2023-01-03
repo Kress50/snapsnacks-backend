@@ -187,6 +187,12 @@ type CreateOrderOutput {
   ok: Boolean!
 }
 
+type GetOrderOutput {
+  error: String
+  ok: Boolean!
+  order: Order
+}
+
 type GetOrdersOutput {
   error: String
   ok: Boolean!
@@ -202,6 +208,7 @@ type Query {
   me: User!
   user(userId: Float!): UserAccountOutput!
   getOrders(input: GetOrdersInput!): GetOrdersOutput!
+  getOrder(input: GetOrderInput!): GetOrderOutput!
 }
 
 input CategoryInput {
@@ -224,6 +231,10 @@ input SearchRestaurantInput {
 
 input GetOrdersInput {
   status: OrderStatus
+}
+
+input GetOrderInput {
+  id: Float!
 }
 
 type Mutation {
