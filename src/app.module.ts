@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
@@ -14,7 +9,6 @@ import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { User } from './users/entities/user.entity';
 import { JwtModule } from './jwt/jwt.module';
-import { JwtMiddleware } from './jwt/jwt.middleware';
 import { AuthModule } from './auth/auth.module';
 import { Verification } from './users/entities/verification.entity';
 import { MailModule } from './mail/mail.module';
@@ -49,9 +43,17 @@ import { OrderItem } from './orders/entities/order-item.dto';
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
+      installSubscriptionHandlers: true,
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({ req }) => ({ user: req['user'] }),
+      context: ({ req, connection }) => {
+        const TOKEN_KEY = 'x-jwt';
+        if (req) {
+          return { token: req.headers[TOKEN_KEY] };
+        } else {
+          return { token: connection.context[TOKEN_KEY] };
+        }
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -89,11 +91,4 @@ import { OrderItem } from './orders/entities/order-item.dto';
     OrdersModule,
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes({
-      path: '/graphql',
-      method: RequestMethod.POST,
-    });
-  }
-}
+export class AppModule {}

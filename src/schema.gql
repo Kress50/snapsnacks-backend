@@ -206,13 +206,13 @@ type GetOrdersOutput {
 }
 
 type Query {
+  me: User!
+  user(userId: Float!): UserAccountOutput!
   allCategories: AllCategoriesOutput!
   category(input: CategoryInput!): CategoryOutput!
   Restaurants(input: RestaurantsInput!): RestaurantsOutput!
   Restaurant(input: RestaurantInput!): RestaurantOutput!
   searchRestaurant(input: SearchRestaurantInput!): SearchRestaurantOutput!
-  me: User!
-  user(userId: Float!): UserAccountOutput!
   getOrders(input: GetOrdersInput!): GetOrdersOutput!
   getOrder(input: GetOrderInput!): GetOrderOutput!
 }
@@ -244,18 +244,38 @@ input GetOrderInput {
 }
 
 type Mutation {
+  createAccount(input: CreateAccountInput!): CreateAccountOutput!
+  loginAccount(input: LoginAccountInput!): LoginAccountOutput!
+  editProfile(input: EditAccountInput!): EditAccountOutput!
+  verifyEmail(input: VerifyEmailInput!): VerifyEmailOutput!
   createDish(input: CreateDishInput!): CreateDishOutput!
   deleteDish(input: DeleteDishInput!): DeleteRestaurantOutput!
   editDish(input: EditDishInput!): EditDishOutput!
   createRestaurant(input: CreateRestaurantInput!): CreateRestaurantOutput!
   editRestaurant(input: EditRestaurantInput!): EditRestaurantOutput!
   deleteRestaurant(input: DeleteRestaurantInput!): EditRestaurantOutput!
-  createAccount(input: CreateAccountInput!): CreateAccountOutput!
-  loginAccount(input: LoginAccountInput!): LoginAccountOutput!
-  editProfile(input: EditAccountInput!): EditAccountOutput!
-  verifyEmail(input: VerifyEmailInput!): VerifyEmailOutput!
   createOrder(input: CreateOrderInput!): CreateOrderOutput!
   editOrder(input: EditOrderInput!): EditOrderOutput!
+}
+
+input CreateAccountInput {
+  email: String!
+  password: String!
+  role: UserRole!
+}
+
+input LoginAccountInput {
+  email: String!
+  password: String!
+}
+
+input EditAccountInput {
+  email: String
+  password: String
+}
+
+input VerifyEmailInput {
+  code: String!
 }
 
 input CreateDishInput {
@@ -306,26 +326,6 @@ input EditRestaurantInput {
 
 input DeleteRestaurantInput {
   restaurantId: Float!
-}
-
-input CreateAccountInput {
-  email: String!
-  password: String!
-  role: UserRole!
-}
-
-input LoginAccountInput {
-  email: String!
-  password: String!
-}
-
-input EditAccountInput {
-  email: String
-  password: String
-}
-
-input VerifyEmailInput {
-  code: String!
 }
 
 input CreateOrderInput {
