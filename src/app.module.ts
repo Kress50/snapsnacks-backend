@@ -19,6 +19,8 @@ import { Dish } from './restaurants/entities/dish.entity';
 import { OrdersModule } from './orders/orders.module';
 import { Order } from './orders/entities/order.entity';
 import { OrderItem } from './orders/entities/order-item.dto';
+import { PaymentsModule } from './payments/payments.module';
+import { Payment } from './payments/entities/payment.entity';
 
 @Module({
   imports: [
@@ -81,6 +83,7 @@ import { OrderItem } from './orders/entities/order-item.dto';
         Dish,
         Order,
         OrderItem,
+        Payment,
       ],
     }),
     JwtModule.forRoot({
@@ -96,6 +99,7 @@ import { OrderItem } from './orders/entities/order-item.dto';
     RestaurantsModule,
     UsersModule,
     OrdersModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}
