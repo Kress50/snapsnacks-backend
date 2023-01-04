@@ -53,16 +53,23 @@ AppModule = __decorate([
                 }),
             }),
             graphql_1.GraphQLModule.forRoot({
-                installSubscriptionHandlers: true,
                 driver: apollo_1.ApolloDriver,
                 autoSchemaFile: (0, path_1.join)(process.cwd(), 'src/schema.gql'),
+                subscriptions: {
+                    'subscriptions-transport-ws': {
+                        onConnect(connectionParams) {
+                            const TOKEN_KEY = 'x-jwt';
+                            return { token: connectionParams[TOKEN_KEY] };
+                        },
+                    },
+                },
                 context: ({ req, connection }) => {
                     const TOKEN_KEY = 'x-jwt';
                     if (req) {
                         return { token: req.headers[TOKEN_KEY] };
                     }
-                    else {
-                        return { token: connection.context[TOKEN_KEY] };
+                    else if (connection) {
+                        console.log(connection.context);
                     }
                 },
             }),

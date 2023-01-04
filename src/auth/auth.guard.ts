@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common/decorators';
 import { CanActivate, ExecutionContext } from '@nestjs/common/interfaces';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { AllowedRoles } from './role.decorator';
-import { User } from 'src/users/entities/user.entity';
 import { JwtService } from 'src/jwt/jwt.service';
 import { UsersService } from 'src/users/users.service';
 

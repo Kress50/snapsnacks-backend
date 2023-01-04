@@ -36,11 +36,17 @@ type Dish {
   options: [DishOptions!]
 }
 
+type OrderItemOption {
+  name: String!
+  choice: String
+}
+
 type OrderItem {
   id: Float!
   createdAt: Float!
   updatedAt: Float!
-  options: [DishOptions!]
+  dish: Dish!
+  options: [OrderItemOption!]
 }
 
 type Order {
@@ -346,4 +352,8 @@ input OrderItemOptionInputType {
 input EditOrderInput {
   id: Float!
   status: OrderStatus!
+}
+
+type Subscription {
+  pendingOrders: Order!
 }

@@ -23,6 +23,7 @@
     "test:e2e:detect": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --detectOpenHandles"
   },
   "dependencies": {
+    "@graphql-tools/schema": "^9.0.12",
     "@nestjs/apollo": "^10.1.7",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
@@ -46,6 +47,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "subscriptions-transport-ws": "^0.11.0",
     "typeorm": "^0.3.11",
     "uuid": "^9.0.0"
   },

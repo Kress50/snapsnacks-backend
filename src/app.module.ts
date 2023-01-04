@@ -43,15 +43,22 @@ import { OrderItem } from './orders/entities/order-item.dto';
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      installSubscriptionHandlers: true,
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      subscriptions: {
+        'subscriptions-transport-ws': {
+          onConnect(connectionParams) {
+            const TOKEN_KEY = 'x-jwt';
+            return { token: connectionParams[TOKEN_KEY] };
+          },
+        },
+      },
       context: ({ req, connection }) => {
         const TOKEN_KEY = 'x-jwt';
         if (req) {
           return { token: req.headers[TOKEN_KEY] };
-        } else {
-          return { token: connection.context[TOKEN_KEY] };
+        } else if (connection) {
+          console.log(connection.context);
         }
       },
     }),
