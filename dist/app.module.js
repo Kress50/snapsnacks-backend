@@ -30,6 +30,7 @@ const order_entity_1 = require("./orders/entities/order.entity");
 const order_item_dto_1 = require("./orders/entities/order-item.dto");
 const payments_module_1 = require("./payments/payments.module");
 const payment_entity_1 = require("./payments/entities/payment.entity");
+const schedule_1 = require("@nestjs/schedule");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -75,6 +76,7 @@ AppModule = __decorate([
                     }
                 },
             }),
+            schedule_1.ScheduleModule.forRoot(),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
                 host: process.env.DB_HOST,

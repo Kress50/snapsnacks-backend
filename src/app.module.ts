@@ -21,6 +21,7 @@ import { Order } from './orders/entities/order.entity';
 import { OrderItem } from './orders/entities/order-item.dto';
 import { PaymentsModule } from './payments/payments.module';
 import { Payment } from './payments/entities/payment.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { Payment } from './payments/entities/payment.entity';
         }
       },
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
