@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PubSub } from 'graphql-subscriptions';
-import { NEW_PENDING_ORDER, PUB_SUB } from 'src/common/common.constants';
+import {
+  NEW_COOKED_ORDER,
+  NEW_PENDING_ORDER,
+  PUB_SUB,
+} from 'src/common/common.constants';
 import { Dish } from 'src/restaurants/entities/dish.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { User, UserRole } from 'src/users/entities/user.entity';
@@ -206,7 +210,6 @@ export class OrdersService {
         where: {
           id: id,
         },
-        relations: ['restaurant'],
       });
       if (!order)
         return {
@@ -247,6 +250,13 @@ export class OrdersService {
         id: id,
         status,
       });
+      if (user.role === UserRole.Owner) {
+        if (status === OrderStatus.Waiting) {
+          await this.pubSub.publish(NEW_COOKED_ORDER, {
+            cookedOrders: { ...order, status },
+          });
+        }
+      }
       return {
         ok: true,
       };

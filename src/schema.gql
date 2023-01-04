@@ -356,4 +356,5 @@ input EditOrderInput {
 
 type Subscription {
   pendingOrders: Order!
+  cookedOrders: Order!
 }
