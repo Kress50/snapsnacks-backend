@@ -232,6 +232,12 @@ type CreatePaymentOutput {
   ok: Boolean!
 }
 
+type GetPaymentOutput {
+  error: String
+  ok: Boolean!
+  payments: [Payment!]
+}
+
 type Query {
   me: User!
   user(userId: Float!): UserAccountOutput!
@@ -242,6 +248,7 @@ type Query {
   searchRestaurant(input: SearchRestaurantInput!): SearchRestaurantOutput!
   getOrders(input: GetOrdersInput!): GetOrdersOutput!
   getOrder(input: GetOrderInput!): GetOrderOutput!
+  getPayments: GetPaymentOutput!
 }
 
 input CategoryInput {
