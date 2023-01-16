@@ -155,11 +155,7 @@ export class RestaurantService {
 
   async countRestaurants(category: Category) {
     return await this.restaurants.count({
-      where: {
-        category: {
-          id: category.id,
-        },
-      },
+      where: { category: { id: category.id } },
     });
   }
 
@@ -167,7 +163,6 @@ export class RestaurantService {
     try {
       const category = await this.category.findOne({
         where: { slug },
-        relations: ['restaurants'],
       });
       if (!category)
         return {
@@ -177,7 +172,7 @@ export class RestaurantService {
       const restaurants = await this.restaurants.find({
         where: {
           category: {
-            id: category.id,
+            slug: category.slug,
           },
         },
         take: 25,
@@ -190,7 +185,9 @@ export class RestaurantService {
       const totalResults = await this.countRestaurants(category);
       return {
         ok: true,
+        restaurants,
         category,
+        totalItems: totalResults,
         totalPages: Math.ceil(totalResults / 25),
       };
     } catch {

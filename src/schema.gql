@@ -157,6 +157,7 @@ type CategoryOutput {
   ok: Boolean!
   totalPages: Int
   totalItems: Int
+  restaurants: [Restaurant!]
   category: Category
 }
 
