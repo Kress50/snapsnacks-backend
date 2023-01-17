@@ -31,6 +31,7 @@ const order_item_dto_1 = require("./orders/entities/order-item.dto");
 const payments_module_1 = require("./payments/payments.module");
 const payment_entity_1 = require("./payments/entities/payment.entity");
 const schedule_1 = require("@nestjs/schedule");
+const uploads_module_1 = require("./uploads/uploads.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -111,6 +112,7 @@ AppModule = __decorate([
             users_module_1.UsersModule,
             orders_module_1.OrdersModule,
             payments_module_1.PaymentsModule,
+            uploads_module_1.UploadsModule,
         ],
     })
 ], AppModule);

@@ -23,6 +23,7 @@
     "test:e2e:detect": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --detectOpenHandles"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.9.0",
     "@graphql-tools/schema": "^9.0.12",
     "@nestjs/apollo": "^10.1.7",
     "@nestjs/common": "^9.0.0",
@@ -38,6 +39,7 @@
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "firebase-admin": "^11.4.1",
     "form-data": "^4.0.0",
     "got": "^11.7.0",
     "graphql": "^16.6.0",
