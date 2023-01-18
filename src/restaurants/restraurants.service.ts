@@ -17,6 +17,10 @@ import {
   EditRestaurantInput,
   EditRestaurantOutput,
 } from './dtos/edit-restaurant.dto';
+import {
+  MyRestaurantInput,
+  MyRestaurantOutput,
+} from './dtos/my-restaurant.dto';
 import { MyRestaurantsOutput } from './dtos/my-restaurants.dto';
 import { RestaurantInput, RestaurantOutput } from './dtos/restaurant.dto';
 import { RestaurantsInput, RestaurantsOutput } from './dtos/restaurants.dto';
@@ -257,10 +261,34 @@ export class RestaurantService {
         ok: true,
       };
     } catch (e) {
-      console.log(e);
       return {
         ok: false,
         error: 'Could not retrieve restaurants list',
+      };
+    }
+  }
+
+  async myRestaurant(
+    owner: User,
+    { id }: MyRestaurantInput,
+  ): Promise<MyRestaurantOutput> {
+    try {
+      const restaurant = await this.restaurants.findOne({
+        where: { owner: { id: owner.id }, id },
+      });
+      if (!restaurant)
+        return {
+          ok: false,
+          error: "This restaurant does not exist or you're not the owner",
+        };
+      return {
+        restaurant,
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        error: 'Could not retrieve restaurant',
       };
     }
   }
