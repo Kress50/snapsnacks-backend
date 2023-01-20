@@ -342,6 +342,7 @@ input VerifyEmailInput {
 
 input CreateDishInput {
   name: String!
+  coverImage: String
   price: Float!
   description: String!
   options: [DishOptionsInputType!]
