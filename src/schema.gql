@@ -223,6 +223,7 @@ type SearchRestaurantOutput {
 type CreateOrderOutput {
   error: String
   ok: Boolean!
+  orderId: Float
 }
 
 type EditOrderOutput {
