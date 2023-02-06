@@ -99,6 +99,13 @@ type Payment {
   restaurantId: Float!
 }
 
+type Verification {
+  id: Float!
+  createdAt: Float!
+  updatedAt: Float!
+  code: String!
+}
+
 type User {
   id: Float!
   createdAt: Float!
@@ -107,6 +114,7 @@ type User {
   password: String!
   role: UserRole!
   verified: Boolean!
+  verification: Verification
   restaurants: [Restaurant!]!
   orders: [Order!]!
   rides: [Order!]!

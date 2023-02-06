@@ -89,7 +89,9 @@ export class UsersService {
 
   async findById(id: number): Promise<UserAccountOutput> {
     try {
-      const user = await this.users.findOneOrFail({ where: { id } });
+      const user = await this.users.findOneOrFail({
+        where: { id },
+      });
       return {
         ok: true,
         user: user,
@@ -111,7 +113,7 @@ export class UsersService {
       const user = await this.users.findOne({ where: { id } });
       if (email) {
         const response = await this.users.findOne({ where: { email } });
-        if (response) {
+        if (response && user.email !== response.email) {
           return {
             ok: false,
             error: 'This email is already taken',
@@ -119,10 +121,15 @@ export class UsersService {
         }
         user.email = email;
         user.verified = false;
-        await this.verifications.delete({ user: { id } });
+        if (user.verification !== null) {
+          await this.verifications.delete({ user: { id } });
+        }
         const verification = await this.verifications.save(
-          this.verifications.create({ user }),
+          this.verifications.create({
+            user,
+          }),
         );
+        user.verification = verification;
         this.mailService.sendVerificationEmail(user.email, verification.code);
       }
       if (password) {
