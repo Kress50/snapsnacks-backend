@@ -42,9 +42,9 @@ AppModule = __decorate([
                 envFilePath: process.env.NODE_ENV === 'dev'
                     ? '.env.development.local'
                     : '.env.test.local',
-                ignoreEnvFile: process.env.NODE_ENV === 'prod',
+                ignoreEnvFile: process.env.NODE_ENV === 'production',
                 validationSchema: Joi.object({
-                    NODE_ENV: Joi.string().valid('dev', 'prod', 'test').required(),
+                    NODE_ENV: Joi.string().valid('dev', 'production', 'test').required(),
                     DB_HOST: Joi.string().required(),
                     DB_PORT: Joi.string().required(),
                     DB_USERNAME: Joi.string().required(),
@@ -59,6 +59,7 @@ AppModule = __decorate([
             graphql_1.GraphQLModule.forRoot({
                 driver: apollo_1.ApolloDriver,
                 autoSchemaFile: (0, path_1.join)(process.cwd(), 'src/schema.gql'),
+                playground: process.env.NODE_ENV !== 'production',
                 subscriptions: {
                     'subscriptions-transport-ws': {
                         onConnect(connectionParams) {
@@ -85,8 +86,9 @@ AppModule = __decorate([
                 username: process.env.DB_USERNAME,
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
-                synchronize: process.env.NODE_ENV !== 'prod',
-                logging: process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
+                synchronize: process.env.NODE_ENV !== 'production',
+                logging: process.env.NODE_ENV !== 'production' &&
+                    process.env.NODE_ENV !== 'test',
                 entities: [
                     user_entity_1.User,
                     verification_entity_1.Verification,
@@ -97,6 +99,7 @@ AppModule = __decorate([
                     order_item_dto_1.OrderItem,
                     payment_entity_1.Payment,
                 ],
+                ssl: true,
             }),
             jwt_module_1.JwtModule.forRoot({
                 privateKey: process.env.PRIVATE_KEY,
