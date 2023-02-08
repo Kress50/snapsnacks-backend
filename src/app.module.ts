@@ -90,7 +90,7 @@ import { UploadsModule } from './uploads/uploads.module';
         OrderItem,
         Payment,
       ],
-      ssl: true,
+      ssl: process.env.NODE_ENV === 'production' ? true : false,
     }),
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,

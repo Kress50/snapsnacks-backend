@@ -99,7 +99,7 @@ AppModule = __decorate([
                     order_item_dto_1.OrderItem,
                     payment_entity_1.Payment,
                 ],
-                ssl: true,
+                ssl: process.env.NODE_ENV === 'production' ? true : false,
             }),
             jwt_module_1.JwtModule.forRoot({
                 privateKey: process.env.PRIVATE_KEY,
