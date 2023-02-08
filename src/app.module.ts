@@ -90,7 +90,10 @@ import { UploadsModule } from './uploads/uploads.module';
         OrderItem,
         Payment,
       ],
-      ssl: process.env.NODE_ENV === 'production' ? true : false,
+      ssl:
+        process.env.NODE_ENV === 'production'
+          ? { rejectUnauthorized: false }
+          : false,
     }),
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
