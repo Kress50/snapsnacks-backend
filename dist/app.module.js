@@ -87,8 +87,7 @@ AppModule = __decorate([
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
                 synchronize: process.env.NODE_ENV !== 'production',
-                logging: process.env.NODE_ENV !== 'production' &&
-                    process.env.NODE_ENV !== 'test',
+                logging: process.env.NODE_ENV !== 'test',
                 entities: [
                     user_entity_1.User,
                     verification_entity_1.Verification,
@@ -99,7 +98,9 @@ AppModule = __decorate([
                     order_item_dto_1.OrderItem,
                     payment_entity_1.Payment,
                 ],
-                ssl: process.env.NODE_ENV === 'production' ? true : false,
+                ssl: process.env.NODE_ENV === 'production'
+                    ? { rejectUnauthorized: false }
+                    : false,
             }),
             jwt_module_1.JwtModule.forRoot({
                 privateKey: process.env.PRIVATE_KEY,

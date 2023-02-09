@@ -77,17 +77,19 @@ export class OrdersService {
             if (dishOption.extra) {
               dishFinalPrice = dishFinalPrice + dishOption.extra;
             } else {
-              //Checking the db for dish option choice with the same name as the item option choice
-              const dishOptionChoice = dishOption.choices.find(
-                (optionChoice) => optionChoice.name === itemOption.choice,
-              );
-              //if choice exists
-              if (dishOptionChoice) {
-                //if extra exists on that choice
-                if (dishOptionChoice.extra) {
-                  dishFinalPrice = dishFinalPrice + dishOptionChoice.extra;
-                }
-              }
+              dishFinalPrice = dishFinalPrice + 0;
+              //! Deprecated, left for future implementation on front-end
+              // //Checking the db for dish option choice with the same name as the item option choice
+              // const dishOptionChoice = dishOption.choices.find(
+              //   (optionChoice) => optionChoice.name === itemOption.choice,
+              // );
+              // //if choice exists
+              // if (dishOptionChoice) {
+              //   //if extra exists on that choice
+              //   if (dishOptionChoice.extra) {
+              //     dishFinalPrice = dishFinalPrice + dishOptionChoice.extra;
+              //   }
+              // }
             }
           }
         }
@@ -113,7 +115,8 @@ export class OrdersService {
         pendingOrders: { order, ownerId: restaurant.ownerId },
       });
       return { ok: true, orderId: order.id };
-    } catch {
+    } catch (e) {
+      console.log(e);
       return {
         ok: false,
         error: 'Could not create order',
