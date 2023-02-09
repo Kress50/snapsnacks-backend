@@ -1,6 +1,7 @@
 ## Description
 
-SnapSnacks app backend
+SnapSnacks app backend.
+Deployed on Render. Postgres deployment on Supabase.
 
 ## Tech stack
 - Node - Express - Nest.js
